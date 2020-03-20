@@ -6,7 +6,10 @@ const router = express.Router();
 router.post('/', (req, res) => {
   const project = req.body;
   Project.insertProject(project)
-    .then(project => res.status(201).json(project))
+    .then(newProject => {
+      console.log(newProject);
+      res.status(201).json(newProject);
+    })
     .catch(err =>
       res.status(500).json({ message: 'There was an error adding the project' })
     );
@@ -19,7 +22,9 @@ router.post('/:projectId/task', (req, res) => {
   task.projectId = projectId;
   Project.insertTask(task)
     .then(task => res.status(201).json(task))
-    .catch(status(500).json({ message: 'There was an error adding the task' }));
+    .catch(err =>
+      status(500).json({ message: 'There was an error adding the task' })
+    );
 });
 
 //add a new resource
@@ -63,7 +68,9 @@ router.get('/tasks', (req, res) => {
 router.get('/:projectId/tasks', (req, res) => {
   const { projectId } = req.params;
   Project.getTasksByProject(projectId)
-    .then(tasks => res.status(200).json(tasks))
+    .then(tasks => {
+      res.status(200).json(tasks);
+    })
     .catch(err =>
       res.status(500).json({ message: 'There was an error getting the tasks' })
     );

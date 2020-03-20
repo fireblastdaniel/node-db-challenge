@@ -29,9 +29,12 @@ function insertTask(task) {
 }
 
 function insertResource(resourceDetails) {
+  console.log(resourceDetails);
   return db('resources')
     .where('description', resourceDetails.description)
+    .first()
     .then(resource => {
+      console.log(resource);
       if (resource) {
         const newProjectResource = {};
         newProjectResource.projectId = resourceDetails.projectId;
@@ -48,7 +51,8 @@ function insertResource(resourceDetails) {
         db('resources')
           .insert(newResource)
           .then(ids => {
-            db('resouces')
+            console.log(ids);
+            db('resources')
               .where('id', ids[0])
               .first()
               .then(resource => {
@@ -90,7 +94,6 @@ function getTaskById(id) {
 function getTasksByProject(projectId) {
   return db('tasks')
     .join('projects', 'projects.id', '=', 'tasks.projectId')
-    .select('projects.projectName', 'projects.descriptions', 'tasks.*')
     .where('tasks.projectId', projectId);
 }
 
